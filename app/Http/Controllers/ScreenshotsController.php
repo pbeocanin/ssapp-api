@@ -30,13 +30,22 @@ class ScreenshotsController extends Controller
 
     }
 
+    public function prepSS(Request $request){
+            $ss = new Screenshot;
+            $ss->ss_id = $request['ss_id'];
+            $ss->user_id = $request->id;
+            $ss->filename = '';
+            return response()->json(['message' => 'okay']);
+
+    }
+
     public function saveSS(Request $request)
     {
         $file = $request->file('screenshot');
         $name = $file->getClientOriginalName();
         $sys_name = Uuid::generate(4)->string . '.png';
         $owner = $request->id;
-        $ss = new Screenshot;
+        $ss = Screenshot::where('ss_id', $request['ss_id'])->where('user_id', $owner)->first();
         $ss->user_id = $owner;
         $ss->ss_id = $request['ss_id'];
         $ss->filename = $sys_name;

@@ -23,6 +23,7 @@ $router->get('/screenshot/{id}', 'ScreenshotsController@getSS');
 
 $router->group(['middleware' => 'jwt.auth'],
     function() use ($router) {
+        $router->put('/screenshot', 'ScreenshotsController@prepSS');
         $router->post('/screenshot', 'ScreenshotsController@saveSS');
         $router->patch('/screenshot/{id}', 'ScreenshotsController@setExp');
     });
