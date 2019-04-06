@@ -18,3 +18,11 @@ $router->get('/', function () use ($router) {
 
 $router->post('/register', 'UsersController@register');
 $router->post('/login', 'AuthController@authenticate');
+$router->get('/screenshot/{id}', 'ScreenshotsController@getSS');
+
+
+$router->group(['middleware' => 'jwt.auth'],
+    function() use ($router) {
+        $router->post('/screenshot', 'ScreenshotsController@saveSS');
+        $router->patch('/screenshot/{id}', 'ScreenshotsController@setExp');
+    });
