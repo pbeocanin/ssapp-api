@@ -31,12 +31,13 @@ class ScreenshotsController extends Controller
     }
 
     public function prepSS(Request $request){
-            $ss = new Screenshot;
-            $ss->ss_id = $request['ss_id'];
-            $ss->user_id = $request->id;
-            $ss->filename = '';
-            $ss->save();
-            return response()->json(['message' => 'okay']);
+        $ss = new Screenshot;
+        $ss->ss_id = $request['ss_id'];
+        $ss->user_id = $request->id;
+        $ss->filename = '';
+        $ss->uploading = true;
+        $ss->save();
+        return response()->json(['message' => 'okay'], 200);
 
     }
 
@@ -47,12 +48,10 @@ class ScreenshotsController extends Controller
         $sys_name = Uuid::generate(4)->string . '.png';
         $owner = $request->id;
         $ss = Screenshot::where('ss_id', $request['ss_id'])->where('user_id', $owner)->first();
-        $ss->user_id = $owner;
-        $ss->ss_id = $request['ss_id'];
         $ss->filename = $sys_name;
-        if ($ss->save()) {
-            $file->move('screenshots', $sys_name);
-        }
+        $ss->uploading = false;
+        $ss->save();
+        $file->move('screenshots', $sys_name);
         return response()->json(['message' => 'okay'], 200);
     }
 
