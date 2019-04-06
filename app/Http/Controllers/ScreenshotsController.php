@@ -35,6 +35,7 @@ class ScreenshotsController extends Controller
             $ss->ss_id = $request['ss_id'];
             $ss->user_id = $request->id;
             $ss->filename = '';
+            $ss->save();
             return response()->json(['message' => 'okay']);
 
     }
