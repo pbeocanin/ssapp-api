@@ -29,4 +29,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+
+    public function screenshots() {
+        return $this->hasMany('App\Screenshot', 'user_id', 'id');
+    }
 }
